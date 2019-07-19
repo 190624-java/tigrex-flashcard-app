@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Flashcard } from '../Flashcard.model';
+import { FlashcardServiceService } from '../flashcard-service.service';
 
 @Component({
   selector: 'app-flashcard',
@@ -7,9 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FlashcardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private flashcardService: FlashcardServiceService) { 
 
-  ngOnInit() {
   }
 
+  ngOnInit() {
+    this.getFlashcards();
+  }
+
+  public flashcards: Flashcard[] = [];
+  public testData: String = "Test Data";
+
+  getFlashcards(): void {
+    this.flashcardService.getText().subscribe(flashcards => this.flashcards = flashcards);
+  }
 }
