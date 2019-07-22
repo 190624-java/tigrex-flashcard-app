@@ -18,6 +18,7 @@ public class FlashcardImpl implements FlashcardDAO {
 		try {
 			Connection connection = DbConnectionHandler.getConnection();
 			con = connection;
+			System.out.println("We got a connection");
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -29,7 +30,7 @@ public class FlashcardImpl implements FlashcardDAO {
 		// TODO Auto-generated method stub
 		try {
 			String sql = "Insert Into flashcards (question, answer)"
-					+ " Value (?, ?)";
+					+ " Values (?, ?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, question);
 			stmt.setString(2, answer);
@@ -53,6 +54,7 @@ public class FlashcardImpl implements FlashcardDAO {
 			List<Flashcard> cards = new ArrayList<>();
 			while(results.next()) {
 				int id = results.getInt("fc_id");
+				System.out.println(id);
 				String questions = results.getString("question");
 				String answers = results.getString("answer");
 				int deck = results.getInt("deck");
@@ -70,7 +72,7 @@ public class FlashcardImpl implements FlashcardDAO {
 	public void createFlashcardDeck(String question, String answer, int deckId) {
 		try {
 			String sql = "Insert Into flashcards (question, answer, deck)"
-					+ " Value (?, ?, ?)";
+					+ " Values (?, ?, ?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, question);
 			stmt.setString(2, answer);

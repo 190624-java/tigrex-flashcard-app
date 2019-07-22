@@ -13,6 +13,14 @@ public class DbConnectionHandler {
 	private static final String password = "Database64";
 	
 	public static Connection getConnection() throws SQLException {
+		
+		try {
+            Class.forName("oracle.jdbc.OracleDriver");
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+		
 		//THIS WILL BE ON THE TEST AND IN CLIENT INTERVIEWS
 		return DriverManager.getConnection(url, username, password);
 	}
