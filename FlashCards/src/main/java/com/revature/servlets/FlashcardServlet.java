@@ -1,6 +1,7 @@
 package com.revature.servlets;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -18,19 +19,23 @@ import com.revature.daoimpls.FlashcardImpl;
 
 public class FlashcardServlet extends HttpServlet {
 	
-	private FlashcardDAO flash;
+	private FlashcardDAO flash = new FlashcardImpl();
+	private Connection con;
 	
 	@Override
 	public void init() throws ServletException {
-		this.flash = new FlashcardImpl();
+		try {
+			con = DbConnectionHandler.getConnection();
+			System.out.println("We got a connection");
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+		}
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		List<Flashcard> cards = flash.getAll();
-		/*for(Flashcard i : cards) {
-			System.out.println(i.getId());
-		}*/
+		List<Flashcard> cards = flash.getAll(con);
 		ObjectMapper mapper = new ObjectMapper();
 		response.getWriter().print(mapper.writeValueAsString(cards));
 	}
@@ -38,7 +43,11 @@ public class FlashcardServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		flash.createFlashcard(request.getParameter("question"), request.getParameter("answer"));
+		String question = request.getParameter("question");
+		String answer = request.getParameter("answer");
+		System.out.println("Question: " + question);
+		System.out.println("Answer: " + answer);
+		flash.createFlashcard(question, answer, con);
 		response.setStatus(201);
 	}
 	

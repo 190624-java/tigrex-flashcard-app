@@ -14,19 +14,9 @@ public class FlashcardImpl implements FlashcardDAO {
 
 	private Connection con = null;
 	
-	public FlashcardImpl() {
-		try {
-			Connection connection = DbConnectionHandler.getConnection();
-			con = connection;
-			System.out.println("We got a connection");
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-		}
-	}
 	
 	@Override
-	public void createFlashcard(String question, String answer) {
+	public void createFlashcard(String question, String answer, Connection con) {
 		// TODO Auto-generated method stub
 		try {
 			String sql = "Insert Into flashcards (question, answer)"
@@ -45,7 +35,7 @@ public class FlashcardImpl implements FlashcardDAO {
 	}
 
 	@Override
-	public List<Flashcard> getAll() {
+	public List<Flashcard> getAll(Connection con) {
 		try {
 			String sql = "Select * From flashcards";
 			PreparedStatement stmt = con.prepareStatement(sql);
